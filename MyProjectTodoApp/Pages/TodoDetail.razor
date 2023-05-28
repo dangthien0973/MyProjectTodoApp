@@ -1,0 +1,35 @@
+﻿@page "/TodoDetail/{Id}";
+@using MyProjectTodoApp.Component;
+@using Model.Enums;
+<div>
+ @if(@todoDto ==null)
+ {
+     <LoadingIndicator></LoadingIndicator>
+ }
+    else
+    {
+        <EditForm Model="todoUpdateRequest" OnValidSubmit="UpdateTask">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="Name">Name</label>
+                <InputText class="form-control" @bind-Value="todoDto.Name"></InputText>
+                <ValidationMessage For="()=>todoUpdateRequest.Name"></ValidationMessage>
+                <small id="nameHelp" class="form-text text-muted">Please enter task title here.</small>
+            </div>
+            <div class="form-group">
+                <label for="Name">Priority</label>
+                <InputSelect class="form-control" @bind-Value="todoUpdateRequest.Priority">
+                    <option>Select a priority</option>
+                    @foreach (string item in Enum.GetNames(typeof(Priority)))
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="()=>todoUpdateRequest.Priority"></ValidationMessage>
+                <small id="nameHelp" class="form-text text-muted">Choose a priority which you want.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </EditForm>
+
+    }
+</div>

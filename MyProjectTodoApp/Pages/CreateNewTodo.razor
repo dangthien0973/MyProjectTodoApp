@@ -1,0 +1,25 @@
+﻿@page "/createNewTodo";
+@using Model.Enums;
+<EditForm Model="TodoCreateRequest" OnValidSubmit="SubmitTask">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <InputText class="form-control" @bind-Value="TodoCreateRequest.Name"></InputText>
+        <ValidationMessage For="()=>TodoCreateRequest.Name"></ValidationMessage>
+        <small id="nameHelp" class="form-text text-muted">Please enter task title here.</small>
+    </div>
+    <div class="form-group">
+        <label for="Name">Priority</label>
+        <InputSelect class="form-control" @bind-Value="TodoCreateRequest.Priority">
+            <option>Select a priority</option>
+            @foreach (string item in Enum.GetNames(typeof(Priority)))
+            {
+                <option value="@item">@item</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="()=>TodoCreateRequest.Priority"></ValidationMessage>
+        <small id="nameHelp" class="form-text text-muted">Choose a priority which you want.</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+

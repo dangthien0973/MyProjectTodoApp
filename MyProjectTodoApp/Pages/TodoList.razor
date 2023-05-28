@@ -1,0 +1,89 @@
+﻿@page "/todoList"
+@using MyProjectTodoApp.Component;
+@using Model.Enums;
+@inject IConfiguration IConfiguration;
+<h3>TodoList</h3>
+@if (TodoDto == null && ListAssigneeDto== null)
+{
+    <LoadingIndicator></LoadingIndicator>
+}
+else
+{
+    <div class="row" ></div>
+    <EditForm Model="@TaskListSearch" OnSubmit="@SearchTask">
+        <div class="row">
+        <div class="col">
+            <lable>Tên CV</lable>
+            <InputText class="form-control" @bind-Value="TaskListSearch.Name"> </InputText>
+        </div>
+        <div class="col">
+            <lable>Người làm</lable>
+            <InputSelect class="form-control" @bind-Value="TaskListSearch.AssigneeId">
+                @foreach (var item in ListAssigneeDto)
+                {
+                    <option value="@item.Id">@item.FullName</option>
+                }
+
+            </InputSelect>
+        </div>
+         <div class="col">
+            <lable>Độ ưu tiên</lable>
+            <InputSelect class="form-control" @bind-Value="TaskListSearch.Priority">
+                @foreach (string item in Enum.GetNames(typeof(Priority)))
+                {
+                        <option value="@item"> @item</option>
+                }
+
+            </InputSelect>
+        </div>
+        <div class="col" >
+                <div style="margin-top :22px">
+                  <button type="submit" class="btn  btn-secondary"> Search</button>
+                  <a href="/createNewTodo" class="btn btn-success"> Thêm </a>
+                </div>
+        </div>
+        </div>
+    </EditForm>
+    <div class ="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name Todo </th>
+                <th scope="col">Status</th>
+                <th scope="col">Priority </th>
+                <th scope="col">User</th>
+                <th scope="col">CreateDate</th>
+                <th scope="col">Detail</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in TodoDto)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                              <td><StatusLabel Status="item.Status"></StatusLabel></td>
+                   <td><PriorityLabel Priority="item.Priority"></PriorityLabel></td>
+                    <td>@item.AssigneeId</td>
+                        <td>@item.CreatedDate.ToString(IConfiguration["DateTimeFormat"])</td>
+                    <td>
+                        <a href="/TodoDetail/@item.Id">Detail</a>
+                    </td>
+                    <td><button class="btn btn-outline-warning" @onclick="()=>Delete(item.Id)">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+                <PaggingNew MetaData="MetaData" Spread="2" SelectedPage="SelectedPage"></PaggingNew>
+              
+
+        </tfoot>
+    </table>
+    </div>
+    <Confirmtion ConfirmationMessage="Are you sure to delete?"
+                  ConfirmationTitle="Delete Task"
+              @ref="DeleteConfirmation"
+                  ConfirmationChanged="OnConfirmDeleteTask">
+
+    </Confirmtion>
+}

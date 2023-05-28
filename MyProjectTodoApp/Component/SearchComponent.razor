@@ -1,0 +1,49 @@
+﻿@using Model.Enums;
+@using Services;
+@using Model;
+
+<EditForm Model="@TaskListSearch" >
+    <div class="row">
+        <div class="col">
+            <lable>Tên CV</lable>
+            <InputText class="form-control" @bind-Value="TaskListSearch.Name"> </InputText>
+        </div>
+        <div class="col">
+            <lable>Người làm</lable>
+            <InputSelect class="form-control" @bind-Value="TaskListSearch.AssigneeId">
+                @foreach (var item in ListAssigneeDto)
+                {
+                    <option value="@item.Id">@item.FullName</option>
+                }
+
+            </InputSelect>
+        </div>
+        <div class="col">
+            <lable>Độ ưu tiên</lable>
+            <InputSelect class="form-control" @bind-Value="TaskListSearch.Priority">
+                @foreach (string item in Enum.GetNames(typeof(Priority)))
+                {
+                    <option value="@item"> @item</option>
+                }
+
+            </InputSelect>
+        </div>
+        <div class="col">
+            <div style="margin-top :22px">
+                <button type="submit" class="btn  btn-secondary"> Search</button>
+                <a href="/createNewTodo" class="btn btn-success"> Thêm </a>
+            </div>
+        </div>
+    </div>
+</EditForm>
+@code {
+    [Inject] private IUserApiClient UserApiClient { set; get; }
+    private TaskListSearch TaskListSearch = new TaskListSearch();
+    private List<AssigneeDto> ListAssigneeDto { set; get; }
+
+    protected async override  Task OnInitializedAsync()
+    {
+        ListAssigneeDto = await UserApiClient.GetAssignees();
+    }
+
+}
