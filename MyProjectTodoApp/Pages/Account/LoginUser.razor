@@ -1,0 +1,30 @@
+﻿@page "/Account/Login";
+
+<h3>LoginUser</h3>
+
+    <div class="card">
+    <h4 class="card-header">Login</h4>
+    <div class="card-body">
+        <EditForm Model="loginUser" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Username</label>
+                <InputText @bind-Value="loginUser.UserName" class="form-control" />
+                <ValidationMessage For="@(() => loginUser.UserName)" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <InputText @bind-Value="loginUser.Password" type="password" class="form-control" />
+                <ValidationMessage For="@(() => loginUser.Password)" />
+            </div>
+            <button disabled="@isLoading" class="btn btn-primary">
+                @if (isLoading)
+                {
+                    <MyProjectTodoApp.Component.LoadingIndicator></MyProjectTodoApp.Component.LoadingIndicator>
+                }
+                Login
+            </button>
+            <NavLink href="account/register" class="btn btn-link">Register</NavLink>
+        </EditForm>
+    </div>
+</div>

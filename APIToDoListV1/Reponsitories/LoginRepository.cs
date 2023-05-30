@@ -53,18 +53,19 @@ namespace APIToDoListV1.Reponsitories
             throw new NotImplementedException();
         }
 
-        public   string LoginUser(LoginUser  lginUser)
+        public  LoginReponse LoginUser(LoginUser  lginUser)
         {
             string token = "";
             var user =  _userRepository.GetUserByNameAndPassword(lginUser);
-            if (user == null) return token;
+            if (user == null) return null;
             token = _jwtUtils.GenerateToken(user);
-            return token;
-        }
-
-        public string LoginUser(RegisterUser registerUser)
-        {
-            throw new NotImplementedException();
+            if (token == null || string.IsNullOrEmpty(token)) return null;
+            return new LoginReponse()
+            {
+               username = user.UserName,
+               FullName =$"{ user.FirstName} {user.LastName}",
+               Token = token
+            };
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using APIToDoListV1.Entities;
 using APIToDoListV1.Reponsitories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using Model.Enums;
@@ -8,7 +10,6 @@ using System.Linq;
 
 namespace APIToDoListV1.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class TodosController : ControllerBase
@@ -21,7 +22,7 @@ namespace APIToDoListV1.Controllers
             _todoRepository = idotoRepository;
             _userRepository = userRepository;
         }
-
+      /*  [Authorize]*/
         [HttpGet]
         public async Task<IActionResult> GetAllTodo([FromQuery]TaskListSearch taskListSearch)
         {

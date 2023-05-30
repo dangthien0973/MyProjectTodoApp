@@ -1,5 +1,6 @@
 ﻿using APIToDoListV1.Reponsitories;
 using APIToDoListV1.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.UserModel;
 
@@ -24,7 +25,18 @@ namespace APIToDoListV1.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginUser login)
         {
-            return Ok(i_login.LoginUser(login));
+            try
+            {
+                var result = i_login.LoginUser(login);
+                if (result == null || string.IsNullOrEmpty(result.Token)) return BadRequest();
+
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                ExteptionUtils exteptionUtils=new  ExteptionUtils(ex.ToString());
+                return BadRequest("Something was wrong went login user Please try again");
+            }
         }
 
         [HttpPost]

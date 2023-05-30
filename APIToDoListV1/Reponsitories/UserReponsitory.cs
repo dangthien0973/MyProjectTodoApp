@@ -37,7 +37,7 @@ namespace APIToDoListV1.Reponsitories
             var User = new User();
             User = GetUserbyUserName(loginUser.UserName);
 
-            if (User != null && BCrypt.Net.BCrypt.Verify(loginUser.Password, User.PasswordHash))
+            if (User != null && !BCrypt.Net.BCrypt.Verify(loginUser.Password, User.PasswordHash))
                 return null;
 
             return User;    

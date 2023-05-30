@@ -7,7 +7,7 @@ namespace APIToDoListV1.Utils
     {
         public string GenerateToken (User registerUser);
 
-        public bool ValidateToken (string token);
+        public string?  ValidateToken (string token);
 
     }
 }

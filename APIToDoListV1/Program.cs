@@ -1,12 +1,18 @@
-﻿using APIToDoListV1.Data;
+﻿using APIToDoListV1.Authorization;
+using APIToDoListV1.Data;
+using APIToDoListV1.Entities;
 using APIToDoListV1.Extentions;
 using APIToDoListV1.Reponsitories;
 using APIToDoListV1.Utils;
 using AppChat_API.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Polly;
+using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,8 +33,14 @@ builder.Services.AddCors(options =>
             .AllowCredentials());
 });
 // key authen token 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-               .AddJwtBearer(options =>
+
+
+// Add authentication services
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
                {
                    options.TokenValidationParameters = new TokenValidationParameters
                    {
@@ -40,9 +52,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                        ValidAudience = builder.Configuration["JwtAudience"],
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecurityKey"]))
                    };
-               });
-builder.Services.AddDbContext<PostgresDbContext>(options =>
+               });  
+    builder.Services.AddDbContext<PostgresDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("EmployeeAppCon")));
+
+
 builder.Services.AddTransient<IdotoRepository, TodoReponsitory>();
 builder.Services.AddTransient<IUserRepository, UserReponsitory>();
 builder.Services.AddTransient<IJwtUtils, JwtUtils>();
@@ -55,12 +69,22 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+  
 }
-
-app.UseHttpsRedirection();
+app.UseMiddleware<ErrorHandlerMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
+app.Use(async (context, next) =>
+{
+    await next();
+    if (context.Response.StatusCode == 401)
+    {
+        Console.WriteLine("Unauthorized request: " + context.Request.Path);
+        Console.WriteLine("Unauthorized request: " + context.Request.Headers);
+    }
+});
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("CorsPolicy");
 app.MapControllers();
 // tự thêm data khi database trống
 app.MigrateDbContext<PostgresDbContext>((context, services) =>
