@@ -1,5 +1,6 @@
 ﻿using APIToDoListV1.Entities;
 using APIToDoListV1.Reponsitories;
+using APIToDoListV1.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,22 +8,26 @@ using Model;
 using Model.Enums;
 using Model.SeekWork;
 using System.Linq;
+using System.Security.Claims;
 
 namespace APIToDoListV1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TodosController : ControllerBase
     {
         private readonly IdotoRepository _todoRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IJwtUtils _jwtUtils;
 
-        public TodosController(IdotoRepository idotoRepository, IUserRepository userRepository)
+        public TodosController(IdotoRepository idotoRepository, IUserRepository userRepository, IJwtUtils jwtUtils)
         {
             _todoRepository = idotoRepository;
             _userRepository = userRepository;
+            _jwtUtils = jwtUtils;
         }
-        [Authorize]
+
         [HttpGet]
         public async Task<IActionResult> GetAllTodo([FromQuery]TaskListSearch taskListSearch)
         {
@@ -40,26 +45,13 @@ namespace APIToDoListV1.Controllers
             });
             return Ok(new PagedList<TodoDto>(tastDto.ToList(), listTodo.MetaData.TotalCount, listTodo.MetaData.CurrentPage, listTodo.MetaData.PageSize) );
         }
+        [Authorize(Policy = "admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TodoCreateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var User = await _userRepository.Create(new Entities.User()
-            {
-                Id= Guid.NewGuid(),
-                FirstName = "Mr2",
-                LastName = "A2",
-                Email = "admin12@gmail.com",
-                NormalizedEmail = "ADMIN12@GMAIL.COM",
-                PhoneNumber = "0321232131",
-                UserName = new Random().Next(3,1020).ToString(),
-                NormalizedUserName = new Random().Next(3, 1020).ToString(),
-                SecurityStamp = Guid.NewGuid().ToString(),
-                
-
-            });
             var task = await _todoRepository.Create(new Entities.Todo()
             {
                 Name = request.Name,
@@ -67,7 +59,7 @@ namespace APIToDoListV1.Controllers
                 Status = Status.Open,
                 CreatedDate = DateTime.UtcNow,
                 Id = request.Id,
-                AssigneeId= User.Id
+                AssigneeId= request.UserId
 
             });
             return CreatedAtAction(nameof(GetById), new { id = task.Id }, task);

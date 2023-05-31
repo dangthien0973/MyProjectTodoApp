@@ -18,5 +18,6 @@ namespace Model
 
         [Required(ErrorMessage = "Please select your task priority")]
         public Priority? Priority { get; set; }
+        public Guid UserId { get; set; } = Guid.NewGuid();
     }
 }

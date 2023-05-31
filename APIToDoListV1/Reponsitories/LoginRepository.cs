@@ -18,8 +18,6 @@ namespace APIToDoListV1.Reponsitories
         {
             try
             {
-
-
                 var user = _userRepository.GetUserbyUserName(registerUser.Username);
                 if (user != null) return false;
 

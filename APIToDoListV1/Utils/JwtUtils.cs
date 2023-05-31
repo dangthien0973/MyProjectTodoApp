@@ -32,6 +32,7 @@ namespace APIToDoListV1.Utils
                      new Claim("UserId", loginUser.Id.ToString()),
                      new Claim("Email", loginUser.Email.ToString()),
                      new Claim("FirstName", loginUser.FirstName.ToString()),
+                     new Claim(ClaimTypes.Role,"admin")
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

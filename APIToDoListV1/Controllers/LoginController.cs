@@ -43,9 +43,22 @@ namespace APIToDoListV1.Controllers
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
         {
-            var result = i_login.GetRegisterUser(registerUser);
-            if (!result) return BadRequest("UserName already taken , Please use another name ");
-            return Ok(result);
+            try
+            {
+
+
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var result = i_login.GetRegisterUser(registerUser);
+                if (!result) return BadRequest("UserName already taken , Please use another name ");
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("Some thing went wrong when register . Please try again! ");
+
+            }
         }
     }
 }

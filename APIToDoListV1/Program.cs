@@ -53,6 +53,10 @@ builder.Services.AddAuthentication(options =>
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecurityKey"]))
                    };
                });
+// this is add Role in identity 
+builder.Services.AddAuthorization(options =>
+    options.AddPolicy("admin", policy => policy.RequireRole("admin"))
+);
 builder.Services.AddAuthorization();
 builder.Services.AddDbContext<PostgresDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("EmployeeAppCon")));

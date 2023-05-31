@@ -6,6 +6,7 @@ namespace MyProjectTodoApp.Pages.Account
     public partial class LoginUser
     {
         [Inject] ILogin Login { set; get; } 
+
         private Model.UserModel.LoginUser loginUser =new Model.UserModel.LoginUser();
         private bool isLoading { get; set; }
         protected override Task OnInitializedAsync()

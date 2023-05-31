@@ -27,7 +27,7 @@ namespace APIToDoListV1.Utils
                 switch (error)
                 {
                     case ExteptionUtils e:
-                        // custom application error
+                        // custom application errors
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
                     case KeyNotFoundException e:

@@ -1,6 +1,7 @@
 ﻿using APIToDoListV1.Entities;
 using AppChat_API.Data;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Model.UserModel;
 
@@ -41,13 +42,15 @@ namespace APIToDoListV1.Reponsitories
                 return null;
 
             return User;    
-            
-
         }
 
         public async Task<List<User>> GetUserList()
         {
           return await _context.Users.ToListAsync();
+        }
+        public IdentityRole<Guid> AssignRoleIntoUser(User user)
+        {
+            return new IdentityRole<Guid>();
         }
     }
 }
