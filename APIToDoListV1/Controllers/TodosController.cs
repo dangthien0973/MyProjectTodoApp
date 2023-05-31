@@ -22,7 +22,7 @@ namespace APIToDoListV1.Controllers
             _todoRepository = idotoRepository;
             _userRepository = userRepository;
         }
-      /*  [Authorize]*/
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllTodo([FromQuery]TaskListSearch taskListSearch)
         {

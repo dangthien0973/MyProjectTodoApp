@@ -40,22 +40,22 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
                {
                    options.TokenValidationParameters = new TokenValidationParameters
                    {
-                       ValidateIssuer = true,
-                       ValidateAudience = true,
-                       ValidateLifetime = true,
+                       ValidateAudience = false,
+                       ValidateIssuer = false,
                        ValidateIssuerSigningKey = true,
                        ValidIssuer = builder.Configuration["JwtIssuer"],
                        ValidAudience = builder.Configuration["JwtAudience"],
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecurityKey"]))
                    };
-               });  
-    builder.Services.AddDbContext<PostgresDbContext>(options =>
+               });
+builder.Services.AddAuthorization();
+builder.Services.AddDbContext<PostgresDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("EmployeeAppCon")));
-
 
 builder.Services.AddTransient<IdotoRepository, TodoReponsitory>();
 builder.Services.AddTransient<IUserRepository, UserReponsitory>();
@@ -71,27 +71,23 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
   
 }
+
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseMiddleware<JwtMiddleware>();
-app.Use(async (context, next) =>
-{
-    await next();
-    if (context.Response.StatusCode == 401)
-    {
-        Console.WriteLine("Unauthorized request: " + context.Request.Path);
-        Console.WriteLine("Unauthorized request: " + context.Request.Headers);
-    }
-});
-app.UseCors("CorsPolicy");
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers();
+
 // tự thêm data khi database trống
 app.MigrateDbContext<PostgresDbContext>((context, services) =>
             {
                 var logger = services.GetService<ILogger<TodoListDbContextSeed>>();
                 new TodoListDbContextSeed().SeedAsync(context, logger).Wait();
             });
-
+app.UseCors("CorsPolicy");
+app.UseAuthentication();
+app.UseRouting();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();
