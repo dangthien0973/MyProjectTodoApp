@@ -33,5 +33,17 @@ namespace MyProjectTodoApp.Services
             _toastService.ShowSuccess($"Login success! Welcome {User.FullName}" );
             _navigationManager.NavigateTo("/todoList");
         }
+
+        public async Task Logout()
+        {
+            User = null;
+            await _localStorageService.RemoveItem(_userKey);
+            _navigationManager.NavigateTo("account/login");
+        }
+
+        public Task Register()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

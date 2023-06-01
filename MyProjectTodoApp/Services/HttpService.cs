@@ -32,14 +32,16 @@ namespace MyProjectTodoApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<T> Delete<T>(string uri)
+        public async Task<T> Delete<T>(string uri)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Delete, uri);
+            return await sendRequest<T>(request);
         }
 
-        public Task<T> Get<T>(string uri)
+        public async Task<T> Get<T>(string uri)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            return await sendRequest<T>(request);
         }
 
         public Task Post(string uri, object value)

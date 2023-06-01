@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.WebUtilities;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
 using Model;
 using Model.SeekWork;
+using Model.UserModel;
+using MyProjectTodoApp.Pages.Account;
 using System;
 using System.Net.Http.Json;
 
@@ -8,11 +12,21 @@ namespace MyProjectTodoApp.Services
 {
     public class TaskApiClient : ITaskApiClient
     {
+        // varibale
+        private readonly ILogin _login;
+        private readonly IHttpService _httpService;
         public HttpClient _httpClient;
+        [Inject] IToastService _toastService { set; get; }
+  
+        public LoginReponse User { get; private set; }
+        private string _userKey = "user";
 
-        public TaskApiClient(HttpClient httpClient)
+
+        public TaskApiClient(HttpClient httpClient,ILogin login, IHttpService httpService)
         {
             _httpClient = httpClient;
+            _login = login;
+            _httpService = httpService;
         }
 
         public async Task<bool> CreateTask(TodoCreateRequest request)
@@ -75,7 +89,10 @@ namespace MyProjectTodoApp.Services
 
             string url = QueryHelpers.AddQueryString("/api/Todos", queryStringParam);
 
-            var result = await _httpClient.GetFromJsonAsync<PagedList<TodoDto>>(url);
+            /*User = await _httpService.Post< PagedList<TodoDto>("/api/Login", taskListSearch);*/
+
+           /* var result = await _httpClient.GetFromJsonAsync<PagedList<TodoDto>>(url);*/
+            var result = await _httpService.Get<PagedList<TodoDto>>(url);
             return result;
         }
 

@@ -1,7 +1,5 @@
 ﻿@page "/Account/Login";
 
-<h3>LoginUser</h3>
-
     <div class="card">
     <h4 class="card-header">Login</h4>
     <div class="card-body">
@@ -18,10 +16,6 @@
                 <ValidationMessage For="@(() => loginUser.Password)" />
             </div>
             <button disabled="@isLoading" class="btn btn-primary">
-                @if (isLoading)
-                {
-                    <MyProjectTodoApp.Component.LoadingIndicator></MyProjectTodoApp.Component.LoadingIndicator>
-                }
                 Login
             </button>
             <NavLink href="account/register" class="btn btn-link">Register</NavLink>

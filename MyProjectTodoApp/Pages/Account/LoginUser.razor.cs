@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast;
+using Microsoft.AspNetCore.Components;
 using MyProjectTodoApp.Services;
 
 namespace MyProjectTodoApp.Pages.Account
@@ -6,6 +7,7 @@ namespace MyProjectTodoApp.Pages.Account
     public partial class LoginUser
     {
         [Inject] ILogin Login { set; get; } 
+
 
         private Model.UserModel.LoginUser loginUser =new Model.UserModel.LoginUser();
         private bool isLoading { get; set; }
