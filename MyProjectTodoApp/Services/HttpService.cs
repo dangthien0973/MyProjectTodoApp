@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
 using Model.UserModel;
 using System.ComponentModel;
 using System.Net;
@@ -15,6 +16,7 @@ namespace MyProjectTodoApp.Services
         private NavigationManager _navigationManager;
         private ILocalStorageService _localStorageService;
         private IConfiguration _configuration;
+ 
         public HttpService(
        HttpClient httpClient,
        NavigationManager navigationManager,
@@ -99,7 +101,8 @@ namespace MyProjectTodoApp.Services
             // auto logout on 401 response
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                _navigationManager.NavigateTo("account/logout");
+
+                _navigationManager.NavigateTo("account/login");
                 return;
             }
 
@@ -116,7 +119,7 @@ namespace MyProjectTodoApp.Services
             // auto logout on 401 response
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                _navigationManager.NavigateTo("account/logout");
+                _navigationManager.NavigateTo("account/login");
                 return default;
             }
 

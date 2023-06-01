@@ -15,10 +15,11 @@
                 <InputText @bind-Value="loginUser.Password" type="password" class="form-control" />
                 <ValidationMessage For="@(() => loginUser.Password)" />
             </div>
+            <div style="margin-top:20px"></div>
             <button disabled="@isLoading" class="btn btn-primary">
                 Login
             </button>
-            <NavLink href="account/register" class="btn btn-link">Register</NavLink>
+            <NavLink href="Account/register" class="btn btn-link">Register</NavLink>
         </EditForm>
     </div>
 </div>

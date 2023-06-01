@@ -1,7 +1,66 @@
 ﻿@page "/Account/register"
-<EditForm>
+@using Model.UserModel;
+@using Services;
+<div class="card">
+    <h4 class="card-header">Register</h4>
+    <div class="card-body">
+        <EditForm Model="modelRegister" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>First Name</label>
+                <InputText @bind-Value="modelRegister.FirstName" class="form-control" />
+                <ValidationMessage For="@(() => modelRegister.FirstName)" />
+            </div>
+            <div class="form-group">
+                <label>Last Name</label>
+                <InputText @bind-Value="modelRegister.LastName" class="form-control" />
+                <ValidationMessage For="@(() => modelRegister.LastName)" />
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <InputText @bind-Value="modelRegister.Username" class="form-control" />
+                <ValidationMessage For="@(() => modelRegister.Username)" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <InputText @bind-Value="modelRegister.Password" type="password" class="form-control" />
+                <ValidationMessage For="@(() => modelRegister.Password)" />
+            </div>
+            <div style="margin-top:20px">
+            <button class="btn btn-primary">
+                Register
+            </button>
 
-</EditForm>
+            <NavLink href="account/login" class="btn btn-link">Cancel</NavLink>
+            </div>
+        </EditForm>
+    </div>
+</div>
 @code {
+    private Model.UserModel.RegisterUser modelRegister = new Model.UserModel.RegisterUser();
 
+    private bool isLoading {set;get;}
+    [Inject] ILogin Login { set; get; }
+    [Inject] protected NavigationManager NavigationManager { get; set; }
+    [Inject] IToastService ToastService { set; get; }
+    [CascadingParameter]
+    public Error? Error { get; set; }
+    private async void OnValidSubmit()
+    {
+
+        try
+        {
+            isLoading = true;
+            await Login.Register(modelRegister);
+            isLoading = true; 
+            isLoading = false;
+            ToastService.ShowInfo("register user success!");
+            NavigationManager.NavigateTo("account/login");
+
+        } 
+        catch (Exception ex)
+        {
+            Error?.ProcessError(ex);
+        }
+    }
 }

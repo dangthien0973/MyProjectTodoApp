@@ -23,7 +23,7 @@
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" @onclick="Logout">
-                <span class="oi-account-logout" aria-hidden="true"></span> Logout
+                <span class="oi oi-book" aria-hidden="true"></span> Logout
             </NavLink>
         </div>
     </nav>
@@ -47,12 +47,15 @@
         try
         {
             Login.Logout();
+            StateHasChanged();
             ToastService.ShowSuccess("Logout success ! See you laters");
             NavigationManager.NavigateTo("/Account/login");
+
         }
         catch(Exception ex)
         {
             Error?.ProcessError(ex);
+            StateHasChanged();
         }
 
     }

@@ -1,6 +1,8 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Win32;
 using Model.UserModel;
+using MyProjectTodoApp.Pages.Account;
 using System.Reflection;
 
 namespace MyProjectTodoApp.Services
@@ -26,7 +28,7 @@ namespace MyProjectTodoApp.Services
             _toastService = toastService;
 
         }
-        public async Task LoginUser(LoginUser loginUser)
+        public async Task LoginUser(Model.UserModel.LoginUser loginUser)
         {
             User = await _httpService.Post<LoginReponse>("/api/Login", loginUser);
             await _localStorageService.SetItem(_userKey, User);
@@ -38,12 +40,11 @@ namespace MyProjectTodoApp.Services
         {
             User = null;
             await _localStorageService.RemoveItem(_userKey);
-            _navigationManager.NavigateTo("account/login");
         }
 
-        public Task Register()
+        public  async Task Register(Model.UserModel.RegisterUser registerUser)
         {
-            throw new NotImplementedException();
+            var result = await _httpService.Post<Model.UserModel.RegisterUser>("/api/Login/Register", registerUser);
         }
     }
 }

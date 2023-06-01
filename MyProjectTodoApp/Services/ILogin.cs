@@ -7,7 +7,7 @@ namespace MyProjectTodoApp.Services
         public Task LoginUser(LoginUser loginUser);
         public Task Logout();
 
-        public Task Register();
+        public Task Register(RegisterUser RegisterUser);
         
     }
 }
