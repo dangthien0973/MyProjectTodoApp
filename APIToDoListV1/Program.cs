@@ -80,11 +80,11 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseMiddleware<JwtMiddleware>();
 
 // tự thêm data khi database trống
-app.MigrateDbContext<PostgresDbContext>((context, services) =>
+/*app.MigrateDbContext<PostgresDbContext>((context, services) =>
             {
                 var logger = services.GetService<ILogger<TodoListDbContextSeed>>();
                 new TodoListDbContextSeed().SeedAsync(context, logger).Wait();
-            });
+            });*/
 app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseRouting();

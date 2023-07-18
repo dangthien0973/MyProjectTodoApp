@@ -23,6 +23,10 @@ namespace AppChat_API.Data
         public DbSet<Todo> Todo { set; get; }
         public DbSet<User>  User { set; get; }
         public DbSet<Role> Role { set; get; }
+        public DbSet<BlogPost> BlogPost { set; get; }
+        public DbSet<CategoryBlog> CategoryBlog { set; get; }
+        public DbSet<Comment> Comment { set; get; }
+
  
     }
 }
