@@ -65,6 +65,7 @@ builder.Services.AddTransient<IdotoRepository, TodoReponsitory>();
 builder.Services.AddTransient<IUserRepository, UserReponsitory>();
 builder.Services.AddTransient<IJwtUtils, JwtUtils>();
 builder.Services.AddTransient<ILoginRepository, LoginRepository>();
+builder.Services.AddTransient<IBlogReponsitory, BlogReponsitory>();
 
 var app = builder.Build();
 

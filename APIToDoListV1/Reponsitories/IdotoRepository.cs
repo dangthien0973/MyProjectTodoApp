@@ -4,7 +4,7 @@ using Model.SeekWork;
 
 namespace APIToDoListV1.Reponsitories
 {
- public    interface IdotoRepository
+  public interface IdotoRepository
     {
         Task<PagedList<Todo>> GetTaskList(TaskListSearch taskListSearch);
 
