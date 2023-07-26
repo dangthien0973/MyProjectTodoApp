@@ -61,6 +61,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddDbContext<PostgresDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("EmployeeAppCon")));
 
+// tiêm service
 builder.Services.AddTransient<IdotoRepository, TodoReponsitory>();
 builder.Services.AddTransient<IUserRepository, UserReponsitory>();
 builder.Services.AddTransient<IJwtUtils, JwtUtils>();

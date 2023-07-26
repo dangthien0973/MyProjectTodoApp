@@ -11,6 +11,6 @@ namespace Model.Blog
     {
         public int CategoryId { get; set; }
         public string Name { get; set; }
-        public List<BlogPostReq> BlogPosts { get; set; } = new List<BlogPostReq>();
+        
     }
 }

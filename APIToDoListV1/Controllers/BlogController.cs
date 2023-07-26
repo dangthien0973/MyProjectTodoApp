@@ -16,15 +16,26 @@ namespace APIToDoListV1.Controllers
     public class BlogController :  ControllerBase
     {
         private readonly IBlogReponsitory _blogRepsitory;
-        public BlogController(IBlogReponsitory blogRepsitory)
+
+
+        public BlogController(IBlogReponsitory blogRepsitor)
         {
-            _blogRepsitory = blogRepsitory;
+
+            _blogRepsitory = blogRepsitor;
         }
         [HttpGet]
         public async Task<IActionResult> GetAllBlog()
         {
-            var listTodo = await _blogRepsitory.GetAllBlogPost();
-            return Ok(listTodo);
+            try
+            {
+
+
+                var listTodo = await _blogRepsitory.GetAllBlogPost();
+                return Ok(listTodo);
+            }
+            catch (Exception ex) { 
+            return BadRequest(ex.Message);
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BlogPostReq request)

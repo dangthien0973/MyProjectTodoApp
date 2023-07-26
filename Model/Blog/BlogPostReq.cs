@@ -27,9 +27,6 @@ namespace Model.Blog
 
         public int CategoryId { get; set; }
         public CategoryBlogRequest Category { get; set; }
-
-     //   public List<Comment> Comments { get; set; } = new List<Comment>();
-        // Other related properties
         public List<string> ImageUrls { get; set; } // List of image URLs
     }
 }

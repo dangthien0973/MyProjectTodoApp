@@ -14,10 +14,10 @@ namespace Model.Blog
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int UserId { get; set; }
-        public UserDTO Author { get; set; }
+        public string UserId { get; set; }
+        
         public int CategoryId { get; set; }
-        public int Category { get; set; }
+        
 
        // public List<Comment> Comments { get; set; } = new List<Comment>();
         // Other related properties

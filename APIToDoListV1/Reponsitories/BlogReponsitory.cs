@@ -11,19 +11,47 @@ namespace APIToDoListV1.Reponsitories
     public class BlogReponsitory : IBlogReponsitory
     {
         private readonly PostgresDbContext _context; // private only không thể thay đổi trong quá trình chạy ứng dụng 
-        private  readonly IMapper _mapper;
-        public BlogReponsitory(PostgresDbContext context, IMapper mapper)
+        private readonly IUserRepository _userRepository;
+        //  private readonly ILogger _logger; // private only không thể thay đổi trong quá trình chạy ứng dụng 
+        public BlogReponsitory(PostgresDbContext context, IUserRepository userRepository)
         {
-            _mapper = mapper;
+            //      _mapper = mapper;
             _context = context;
+            _userRepository = userRepository;
         }
 
         public async Task<BlogPostReq> Create(BlogPostReq task)
         {
-            var blogEntity =  _mapper.Map<BlogPost>(task);
-            await _context.BlogPost.AddAsync(blogEntity);
-            await _context.SaveChangesAsync();
-            return task;
+            try
+            {
+                var user = _userRepository.GetUserbyUserName("dangthien");
+                var addCategory = await _context.CategoryBlog.AddAsync(new CategoryBlog
+                {
+                    CategoryId = 1,
+                    Name = "Tesst",
+                });
+                    
+                
+
+                var blogEntity = new BlogPost
+                {
+                    Title = task.Title,
+                    BlogPostId =  task.BlogPostId,
+                    CategoryId = 1,
+                    ImageUrls = task.ImageUrls,
+                    CreatedAt = task.CreatedAt,
+                    Content = task.Content,
+                    Author = user
+                };
+                await _context.BlogPost.AddAsync(blogEntity);
+                await _context.SaveChangesAsync();
+                return task;
+            }
+            catch(Exception ex)
+            {
+              
+                return null;
+            }
         }
 
         public Task<BlogPostReq> Delete(BlogPostReq task)
@@ -40,8 +68,7 @@ namespace APIToDoListV1.Reponsitories
                 CategoryId = x.CategoryId,
                 Content = x.Content,
                 ImageUrls = x.ImageUrls,
-                Title = x.Title,
-                Category = x.CategoryId
+                Title = x.Title,    
             }).ToList();
             return lstBlogReponse;
         }
