@@ -25,11 +25,11 @@ namespace APIToDoListV1.Reponsitories
             try
             {
                 var user = _userRepository.GetUserbyUserName("dangthien");
-                var addCategory = await _context.CategoryBlog.AddAsync(new CategoryBlog
+/*                var addCategory = await _context.CategoryBlog.AddAsync(new CategoryBlog
                 {
                     CategoryId = 1,
                     Name = "Tesst",
-                });
+                });*/
                     
                 
 
@@ -73,9 +73,18 @@ namespace APIToDoListV1.Reponsitories
             return lstBlogReponse;
         }
 
-        public Task<BlogPostReq> GetById(BlogPostReq id)
+        public async Task<BlogPostReponse> GetById( int id)
         {
-            throw new NotImplementedException();
+           var result = await  _context.BlogPost.FirstOrDefaultAsync(x=>x.BlogPostId == id);
+            var finalResult = new BlogPostReponse
+            {
+                BlogPostId = result.BlogPostId,
+                CategoryId = result.CategoryId,
+                Content = result.Content,
+                ImageUrls = result.ImageUrls,
+                Title = result.Title,
+            };
+            return finalResult;
         }
 
         public Task<BlogPostReq> Update(BlogPostReq task)

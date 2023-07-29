@@ -13,8 +13,8 @@ namespace APIToDoListV1.Reponsitories
 
         public  Task<BlogPostReq> Update(BlogPostReq task);
 
-        public  Task<BlogPostReq> Delete(BlogPostReq task);
+        public  Task<BlogPostReq> Delete(BlogPostReq task); 
 
-        public  Task<BlogPostReq> GetById(BlogPostReq id);
+        public  Task<BlogPostReponse> GetById(int id);
     }
 }
