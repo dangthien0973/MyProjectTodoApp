@@ -44,11 +44,11 @@ namespace APIToDoListV1.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        public async Task<HandleResponse<BlogPostReponse>> GetById([FromRoute] int id)
         {
             var task = await _blogRepsitory.GetById(id);
-            if (task == null) return BadRequest();
-            return      Ok(task);
+            if (task == null) return new HandleResponse<BlogPostReponse>(task);
+            return new HandleResponse<BlogPostReponse>(task);
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BlogPostReq request)
