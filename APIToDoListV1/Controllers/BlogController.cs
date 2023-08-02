@@ -31,8 +31,6 @@ namespace APIToDoListV1.Controllers
         {
             try
             {
-
-
                 var listTodo = await _blogRepsitory.GetAllBlogPost();
                 return new HandleList<BlogPostReponse>(listTodo);
             }
@@ -50,6 +48,9 @@ namespace APIToDoListV1.Controllers
             if (task == null) return new HandleResponse<BlogPostReponse>(task);
             return new HandleResponse<BlogPostReponse>(task);
         }
+
+
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BlogPostReq request)
         {
@@ -59,6 +60,15 @@ namespace APIToDoListV1.Controllers
             var task = await _blogRepsitory.Create(request);
 
             return Ok(task);
+        }
+
+        [HttpGet]
+        [Route(nameof(SearchBlog))]
+        public async Task<IActionResult> SearchBlog([FromQuery] BlogSearch blogSearch)
+        {
+            var reusult = await _blogRepsitory.GetAllBlogPost(blogSearch);
+
+            return Ok(reusult);
         }
 
     }

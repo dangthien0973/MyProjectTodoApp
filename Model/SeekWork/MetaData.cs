@@ -14,5 +14,6 @@ namespace Model.SeekWork
         public int TotalCount { get; set; }
         public bool HasPrevious => CurrentPage > 1;
         public bool HasNext => CurrentPage < TotalPages;
+        public bool isSuccess { get; set; }
     }
 }
