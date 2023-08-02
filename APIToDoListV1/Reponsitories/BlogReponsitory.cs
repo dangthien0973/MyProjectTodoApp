@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Model;
 using Model.Blog;
 using Model.SeekWork;
+using Polly;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -93,11 +94,10 @@ namespace APIToDoListV1.Reponsitories
 
         public async Task<PagedList<BlogPostReponse>> GetAllBlogPost(BlogSearch blogSearch)
         {
-            
+            var count = _context.BlogPost.Where(x => (blogSearch.CategoryId > 0 ? x.CategoryId == blogSearch.CategoryId : x.CategoryId > 0)&& (!string.IsNullOrEmpty(blogSearch.TitleBlog) ? x.Title.Contains(blogSearch.TitleBlog) : x.Title != null)).Count();
             var queryData = await _context.BlogPost.Where(x => (blogSearch.CategoryId > 0 ? x.CategoryId == blogSearch.CategoryId : x.CategoryId > 0)
                                                           && (!string.IsNullOrEmpty(blogSearch.TitleBlog) ?  x.Title.Contains(blogSearch.TitleBlog) : x.Title != null)).Skip((blogSearch.PageNumber - 1) * blogSearch.PageSize).Take(blogSearch.PageSize).ToListAsync();
-            var count = queryData.Count;
-
+         
             var resultData = queryData.Select(x => new BlogPostReponse
             {
                 BlogPostId= x.BlogPostId,
