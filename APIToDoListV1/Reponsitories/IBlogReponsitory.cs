@@ -17,5 +17,6 @@ namespace APIToDoListV1.Reponsitories
 
         public  Task<BlogPostReponse> GetById(int id);
         public Task<PagedList<BlogPostReponse>> GetAllBlogPost(BlogSearch blogSearch);
+        public  Task<List<CategoryBlog>> GetAllMenu();
     }
 }

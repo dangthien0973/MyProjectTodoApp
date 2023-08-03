@@ -7,6 +7,7 @@ using Model;
 using Model.Blog;
 using Model.SeekWork;
 using Polly;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -108,7 +109,12 @@ namespace APIToDoListV1.Reponsitories
                 CategoryId= x.CategoryId
             }).ToList();          
             return new PagedList<BlogPostReponse>(resultData, count, blogSearch.PageNumber, blogSearch.PageSize);
-        }   
+        }
 
+        public async Task<List<CategoryBlog>> GetAllMenu()
+        {
+            var resutl = _context.CategoryBlog.ToList();
+            return resutl;
+        }
     }
 }

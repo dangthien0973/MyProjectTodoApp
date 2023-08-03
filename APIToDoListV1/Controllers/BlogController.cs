@@ -71,5 +71,25 @@ namespace APIToDoListV1.Controllers
             return Ok(reusult);
         }
 
+        [HttpGet]
+        [Route(nameof(GetAllTopic))]
+        public async Task<HandleList<CategoryBlogRequest>> GetAllTopic()
+        {
+            try
+            {
+                var listMenu = await _blogRepsitory.GetAllMenu();
+                var result = listMenu.Select(x => new CategoryBlogRequest()
+                {
+                    CategoryId = x.CategoryId,
+                    Name = x.Name
+                }).ToList();
+                return new HandleList<CategoryBlogRequest>(result);
+            }
+            catch (Exception ex)
+            {
+                return new HandleList<CategoryBlogRequest>();
+            }
+        }
+
     }
 }
