@@ -41,6 +41,22 @@ namespace APIToDoListV1.Controllers
         }
 
         [HttpGet]
+        [Route(nameof(GetTopicPopular))]
+        public async Task<HandleList<BlogPostReponse>> GetTopicPopular()
+        {
+            try
+            {
+                var listBlog = await _blogRepsitory.GetTopicPopular();
+                return new HandleList<BlogPostReponse>(listBlog);
+            }
+            catch (Exception ex)
+            {
+
+                return new HandleList<BlogPostReponse>();
+            }
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public async Task<HandleResponse<BlogPostReponse>> GetById([FromRoute] int id)
         {
