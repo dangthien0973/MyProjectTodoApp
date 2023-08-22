@@ -30,20 +30,15 @@ namespace APIToDoListV1.Reponsitories
             try
             {
                 var user = _userRepository.GetUserbyUserName("dangthien");
-/*                var addCategory = await _context.CategoryBlog.AddAsync(new CategoryBlog
-                {
-                    CategoryId = 1,
-                    Name = "Tesst",
-                });*/
+
                 var blogEntity = new BlogPost
                 {
                     Title = task.Title,
-                    BlogPostId =  task.BlogPostId,
-                    CategoryId = 1,
-                    ImageUrls = task.ImageUrls,
-                    CreatedAt = task.CreatedAt,
+                    CategoryId = task.CategoryId,
                     Content = task.Content,
-                    Author = user
+                    Author = user,
+                    ImageUrls = task.ImageUrls,
+                    Description = task.Description
                 };
                 await _context.BlogPost.AddAsync(blogEntity);
                 await _context.SaveChangesAsync();
@@ -106,7 +101,8 @@ namespace APIToDoListV1.Reponsitories
                 CreatedAt = x.CreatedAt,    
                 ImageUrls= x.ImageUrls,
                 Title   = x.Title,
-                CategoryId= x.CategoryId
+                CategoryId= x.CategoryId,
+                Description = x.Description
             }).ToList();          
             return new PagedList<BlogPostReponse>(resultData, count, blogSearch.PageNumber, blogSearch.PageSize);
         }

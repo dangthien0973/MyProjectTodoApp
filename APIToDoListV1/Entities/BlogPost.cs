@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace APIToDoListV1.Entities
 {
     public class BlogPost
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BlogPostId { get; set; }
 
         [Required]
@@ -23,6 +25,7 @@ namespace APIToDoListV1.Entities
 
         public List<Comment> Comments { get; set; } = new List<Comment>();
         // Other related properties
-        public List<string> ImageUrls { get; set; } // List of image URLs
+        public string ImageUrls { get; set; } // List of image URLs
+        public string Description { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace Model.Blog
 
        // public List<Comment> Comments { get; set; } = new List<Comment>();
         // Other related properties
-        public List<string> ImageUrls { get; set; } // List of image URLs
+        public string ImageUrls { get; set; } // List of image URLs
+        public string Description { get; set; } // List of image URLs
     }
 }

@@ -23,10 +23,9 @@ namespace Model.Blog
         public DateTime CreatedAt { get; set; }
 
         public int UserId { get; set; }
-        public UserDTO Author { get; set; }
 
         public int CategoryId { get; set; }
-        public CategoryBlogRequest Category { get; set; }
-        public List<string> ImageUrls { get; set; } // List of image URLs
+        public string ImageUrls { get; set; } // List of image URLs
+        public string Description { set; get; }
     }
 }

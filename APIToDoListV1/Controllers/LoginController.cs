@@ -29,7 +29,6 @@ namespace APIToDoListV1.Controllers
             {
                 var result = i_login.LoginUser(login);
                 if (result == null || string.IsNullOrEmpty(result.Token)) return BadRequest();
-
                 return Ok(result);
             }
             catch(Exception ex)
@@ -45,8 +44,6 @@ namespace APIToDoListV1.Controllers
         {
             try
             {
-
-
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 

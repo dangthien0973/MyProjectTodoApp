@@ -17,7 +17,6 @@ namespace APIToDoListV1.Authorization
             var userId = jwtUtils.ValidateToken(token);
             if(userId!=null)
             context.Items["User"] = userRepository.GetUserById(new Guid(userId));
-
             await _next(context);
         }
     }
