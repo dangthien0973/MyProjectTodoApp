@@ -1,4 +1,5 @@
 ﻿using APIToDoListV1.Entities;
+using APIToDoListV1.Extentions;
 using AppChat_API.Data;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +39,9 @@ namespace APIToDoListV1.Reponsitories
                     Content = task.Content,
                     Author = user,
                     ImageUrls = task.ImageUrls,
-                    Description = task.Description
+                    Description = task.Description,
+                    CreatedAt = DateTimeExtensions.SetKindUtc(DateTime.Now)
+
                 };
                 await _context.BlogPost.AddAsync(blogEntity);
                 await _context.SaveChangesAsync();
@@ -98,11 +101,11 @@ namespace APIToDoListV1.Reponsitories
             {
                 BlogPostId= x.BlogPostId,
                 Content = x.Content,
-                CreatedAt = x.CreatedAt,    
                 ImageUrls= x.ImageUrls,
                 Title   = x.Title,
                 CategoryId= x.CategoryId,
-                Description = x.Description
+                Description = x.Description,
+                CreatedAt = x.CreatedAt
             }).ToList();          
             return new PagedList<BlogPostReponse>(resultData, count, blogSearch.PageNumber, blogSearch.PageSize);
         }
@@ -122,6 +125,7 @@ namespace APIToDoListV1.Reponsitories
                 Content = x.Content,
                 ImageUrls = x.ImageUrls,
                 Title = x.Title,
+                CreatedAt = x.CreatedAt
             }).ToList();
             return lstBlogReponse;
         }

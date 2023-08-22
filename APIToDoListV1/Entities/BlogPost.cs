@@ -15,7 +15,7 @@ namespace APIToDoListV1.Entities
         [Required]
         public string Content { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } 
 
         public int UserId { get; set; }
         public User Author { get; set; }

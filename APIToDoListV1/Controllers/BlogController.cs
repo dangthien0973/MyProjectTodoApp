@@ -68,14 +68,20 @@ namespace APIToDoListV1.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] BlogPostReq request)
+        public async Task<HandleResponse<bool>> Create([FromBody] BlogPostReq request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return new HandleResponse<bool>(false, "Thất bại do không thỏa bộ lọc");
 
-            var task = await _blogRepsitory.Create(request);
-
-            return Ok(task);
+                var task = await _blogRepsitory.Create(request);
+                return new HandleResponse<bool>(true, "Thành công");
+            }
+            catch(Exception ex)
+            {
+                return new HandleResponse<bool>(false, ex.ToString());
+            }
         }
 
         [HttpGet]
